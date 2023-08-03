@@ -10,17 +10,16 @@ services:
     volumes:
       - dev:/var/www/
   serverdb:
-    image: postgres:latest
+    image: mariadb:latest
     environment:
-      POSTGRES_USER: changeme
-      POSTGRES_PASSWORD: changeme
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
     ports:
-      - 5432:5432
+      - 3306:3306
     networks:
       - connwebserver
       - connserverdb
     volumes:
-      - pgdata:/pgdata/
+      - mysqldata:/mysqldata/
       
   servercache:
     image: redis:latest
@@ -31,17 +30,16 @@ services:
     volumes:
       - redisdata:/redis/data
   clientedb:
-    image: dpage/pgadmin4:latest
+    image: phpmyadmin:latest
     environment:
-      - PGADMIN_DEFAULT_EMAIL=changeme@mail.com
-      - PGADMIN_DEFAULT_PASSWORD=changeme
+      - PMA_USER=root
     ports:
       - 8080:80
     networks:
       - connserverdb
 
 volumes:
-  pgdata:
+  mysqldata:
   dev:
   redisdata:
   
