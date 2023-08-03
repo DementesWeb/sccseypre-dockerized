@@ -1,6 +1,4 @@
-# autogenerame el Dockerfile con ubuntu, apache2, php8.0, software properties 
-# ppa:ondrej/php
-
+# Dockerfile Base
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -13,6 +11,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Instalamos apache2, php8.0, software properties ppa:ondrej/php, curl, composer, git, nodejs, npm, yarn
 RUN apt-get update && apt-get install -y apache2 software-properties-common && \
+    apt-get update && apt-get install -y nano && \
     add-apt-repository -y ppa:ondrej/php && apt-get update && \
     apt-get install -y php8.0 php8.0-mysql php8.0-curl php8.0-gd php8.0-intl php8.0-mbstring php8.0-soap \
     php8.0-xml php8.0-xmlrpc php8.0-zip php8.0-fpm php8.0-dom libapache2-mod-php8.0 php8.0-redis && apt-get update && apt-get install -y curl && \
@@ -72,6 +71,9 @@ RUN a2ensite sccseypre-dev.conf
 
 # Habilitamos mod_rewrite
 RUN a2enmod rewrite
+
+# Habilitamos mod_headers
+RUN a2enmod headers
 
 # Exponemos los puertos
 EXPOSE 80 22
